@@ -1,7 +1,7 @@
 import requests
 import csv
 import os
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from dotenv import load_dotenv
 
 # 加载 .env 文件中的环境变量
@@ -122,7 +122,9 @@ def main():
     else:
         print("[!] 警告: 未配置 OpenSky 账户。正作为匿名访客访问（将会受到更严格的访问频率及额度限制）...")
 
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 获取北京时间 (UTC+8)
+    tz_utc_8 = timezone(timedelta(hours=8))
+    timestamp = datetime.now(tz_utc_8).strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{timestamp}] 开始采集...")
     
     flights = get_flights()
