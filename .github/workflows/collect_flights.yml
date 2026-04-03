@@ -2,9 +2,8 @@ name: Collect Flight Data
 
 on:
   schedule:
-    # 每分钟触发一次
-    # 注意：虽然设置了每分钟，但受限于 GitHub Actions 的系统调度机制，实际的最短运行间隔通常在 5 分钟左右。
-    - cron: '* * * * *'
+    # 每5分钟触发一次（GitHub Actions 免费额度对高频定时任务有较严格的限制，5分钟是较为推荐的短间隔）
+    - cron: '*/5 * * * *'
   workflow_dispatch: # 允许你在 GitHub 网页上手动触发运行
 
 jobs:
