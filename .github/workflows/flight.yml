@@ -1,0 +1,36 @@
+name: 怀柔航班数据采集
+
+on:
+  schedule:
+    - cron: '* * * * *'   # 每分钟运行一次
+  workflow_dispatch:       # 允许手动触发
+
+jobs:
+  fetch-flights:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      
+      - name: 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      
+      - name: 安装依赖
+        run: pip install requests
+      
+      - name: 运行脚本
+        run: python flight_monitor.py
+        env:
+          OPENSKY_USERNAME: ${{ secrets.OPENSKY_USERNAME }}
+          OPENSKY_PASSWORD: ${{ secrets.OPENSKY_PASSWORD }}
+      
+      - name: 提交数据
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "自动更新航班数据 $(date +'%Y-%m-%d %H:%M')"
+          git push
