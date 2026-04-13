@@ -3,7 +3,7 @@ name: Collect Flight Data
 on:
   schedule:
     # 每5分钟触发一次（GitHub Actions 免费额度对高频定时任务有较严格的限制，5分钟是较为推荐的短间隔）
-    - cron: '*/5 * * * *'
+    ### - cron: '*/5 * * * *'
   workflow_dispatch: # 允许你在 GitHub 网页上手动触发运行
 
 jobs:
